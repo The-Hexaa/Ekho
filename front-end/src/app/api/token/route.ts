@@ -1,17 +1,24 @@
 import { AccessToken } from 'livekit-server-sdk';
 
 export async function GET(request: Request) {
-  const roomName = Math.random().toString(36).substring(7);
-  console.log("room name : ",roomName)
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id');
+  // const roomName = id || Math.random().toString(36).substring(7); // Use ID if provided, otherwise generate a random room name
+  console.log("room name: ", id);
+
   const apiKey = process.env.LIVEKIT_API_KEY;
   const apiSecret = process.env.LIVEKIT_API_SECRET;
-  const at = new AccessToken(apiKey, apiSecret, {identity: "human_user"});
+  const at = new AccessToken(apiKey, apiSecret, { identity: "human_user" });
+
   at.addGrant({
-    room: roomName,
+    room: id,
     roomJoin: true,
     canPublish: true,
     canPublishData: true,
     canSubscribe: true,
   });
-  return Response.json({ accessToken: await at.toJwt(), url: process.env.LIVEKIT_URL });
+
+  return new Response(JSON.stringify({ accessToken: await at.toJwt(), url: process.env.LIVEKIT_URL }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
 }

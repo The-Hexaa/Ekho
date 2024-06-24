@@ -5,6 +5,7 @@ import {
   useLocalParticipant,
 } from '@livekit/components-react';
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 import '@fortawesome/fontawesome-free/css/all.css'; // Ensure Font Awesome is available
 import styles from '../style/home.module.css'; // Import the CSS module
 
@@ -13,6 +14,7 @@ export default function Home() {
   const [url, setUrl] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -25,7 +27,15 @@ export default function Home() {
   }, [isConnected]);
 
   const handleConnect = async () => {
-    const { accessToken, url } = await fetch('/api/token').then(res => res.json());
+    const { id } = router.query;
+    if (!id) {
+      console.error("No ID found in the URL");
+      return;
+    }
+
+    const response = await fetch(`/api/token?id=${id}`);
+    const { accessToken, url } = await response.json();
+
     setToken(accessToken);
     setUrl(url);
     setIsConnected(true);

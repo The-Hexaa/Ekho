@@ -38,6 +38,7 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   const handleTalkClick = (id: string) => {
+    console.log("id: ",id)
     router.push(`/page?id=${id}`);
   };
 
