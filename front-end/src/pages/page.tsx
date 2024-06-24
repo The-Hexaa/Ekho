@@ -6,7 +6,7 @@ import {
 } from '@livekit/components-react';
 import { useState, useEffect } from "react";
 import '@fortawesome/fontawesome-free/css/all.css'; // Ensure Font Awesome is available
-import styles from './style/home.module.css'; // Import the CSS module
+import styles from '../style/home.module.css'; // Import the CSS module
 
 export default function Home() {
   const [token, setToken] = useState<string | null>(null);
