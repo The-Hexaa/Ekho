@@ -7,7 +7,6 @@ import {
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import '@fortawesome/fontawesome-free/css/all.css'; // Ensure Font Awesome is available
-import styles from '../style/home.module.css'; // Import the CSS module
 
 export default function Home() {
   const [token, setToken] = useState<string | null>(null);
@@ -50,25 +49,25 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <i className={`fas fa-user-circle ${styles.userIcon}`}></i>
-        <div className={styles.buttonContainer}>
+      <main className="flex flex-col items-center justify-center h-screen">
+        <i className="fas fa-user-circle text-5xl"></i>
+        <div className="flex mt-5">
           <button 
             onClick={handleConnect}
-            className={styles.button}
+            className="mr-2"
             disabled={isConnected}
           >
             <i className="fas fa-phone fa-2x"></i>
           </button>
           <button 
             onClick={handleDisconnect}
-            className={styles.button}
+            className="mr-0"
             disabled={!isConnected}
           >
             <i className="fas fa-phone-slash fa-2x"></i>
           </button>
         </div>
-        {isConnected && <div className={styles.callDuration}>Call Duration: {Math.floor(callDuration / 60)}:{callDuration % 60 < 10 ? '0' : ''}{callDuration % 60}</div>}
+        {isConnected && <div className="mt-2">Call Duration: {Math.floor(callDuration / 60)}:{callDuration % 60 < 10 ? '0' : ''}{callDuration % 60}</div>}
         {token && url && (
           <LiveKitRoom
             token={token}
