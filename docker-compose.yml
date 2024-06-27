@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - LIVEKIT_URL=ws://192.168.110.5:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secret
+      - DEEPGRAM_API_KEY=6a078665d65eec1d7ae22268e3627db281c04633
+      - ELEVEN_API_KEY=sk_8e1b602eae49e73c391cc876ec5ddfdd793850f4eee81d1c
+      - OPENAI_API_KEY=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
+    ports:
+      - "5000:5000"
+    depends_on:
+      - frontend
+
+  frontend:
+    build: 
+      context: ./front-end
+      dockerfile: dockerfile
+    environment:
+      - NEXT_PUBLIC_LIVEKIT_URL=ws://192.168.110.5:7880
+      - NEXT_PUBLIC_LIVEKIT_API_KEY=devkey
+      - NEXT_PUBLIC_LIVEKIT_API_SECRET=secret
+    ports:
+      - "3000:3000"

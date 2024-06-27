@@ -1,6 +1,6 @@
 import asyncio
 import logging
-
+import os
 from livekit.agents import JobContext, JobRequest, WorkerOptions, cli
 from livekit.agents.llm import (
     ChatContext,
@@ -9,6 +9,8 @@ from livekit.agents.llm import (
 )
 from livekit.agents.voice_assistant import VoiceAssistant
 from livekit.plugins import deepgram, elevenlabs, openai, silero
+
+print(os.environ.get("LIVEKIT_API_KEY"))
 
 async def john_doe(ctx: JobContext):
     # Create an initial chat context with a system prompt

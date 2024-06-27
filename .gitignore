@@ -1,3 +1,5 @@
 /backend/venv/
+/backend/venv1/
 /front-end/node_modules/
 /front-end/.next/
+/backend/app.py

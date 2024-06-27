@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { isAuthenticated } from '../utils/auth';
 
+
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +18,7 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('http://192.168.110.5:9000/register', {
+    const res = await fetch(`/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,6 +27,8 @@ const Register = () => {
     });
 
     if (res.ok) {
+      const data = await res.json();
+      localStorage.setItem('user', JSON.stringify(data));
       router.push('/login');
     } else {
       console.error('Registration failed');

@@ -17,6 +17,7 @@ export default function Call() {
   const id = searchParams.get('id');
   const router = useRouter();
 
+
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isConnected) {
@@ -82,6 +83,7 @@ export default function Call() {
             <ActiveRoom />
           </LiveKitRoom>
         )}
+        <MicrophoneAccessComponent />
       </main>
     </>
   );
@@ -90,6 +92,7 @@ export default function Call() {
 const ActiveRoom = () => {
   const { localParticipant, isMicrophoneEnabled } = useLocalParticipant();
 
+  // console.log("isMicrophoneEnabled", isMicrophoneEnabled)
   if (!localParticipant) {
     console.error("Local participant is undefined");
     return <div>Error: Local participant is undefined</div>;
@@ -114,3 +117,43 @@ const ActiveRoom = () => {
     </>
   );
 };
+
+
+const useMicrophone = () => {
+  const [microphoneAccess, setMicrophoneAccess] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getMicrophoneAccess = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        setMicrophoneAccess(true);
+        console.log(stream)
+        console.log('Microphone access granted');
+      } catch (err) {
+        setError(err);
+        console.error('Microphone access denied', err);
+      }
+    };
+
+    getMicrophoneAccess();
+  }, []);
+
+  return { microphoneAccess, error };
+};
+
+const MicrophoneAccessComponent = () => {
+  const { microphoneAccess, error } = useMicrophone();
+
+  return (
+    <div>
+      {microphoneAccess ? (
+        <p>Microphone access granted</p>
+      ) : (
+        <p>Microphone access denied or not yet requested</p>
+      )}
+      {error && <p>Error: {error}</p>}
+    </div>
+  );
+};
+

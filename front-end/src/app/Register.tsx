@@ -6,9 +6,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const router = useRouter();
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('http://192.168.110.5:9000/register', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
